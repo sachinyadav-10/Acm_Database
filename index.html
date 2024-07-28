@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Portal</title>
+</head>
+<body>
+    <h1>Admin Portal</h1>
+
+    <h2>Add Officer</h2>
+    <form id="addOfficerForm" enctype="multipart/form-data">
+        <label for="addOfficerId">Officer ID:</label>
+        <input type="text" id="addOfficerId" name="officerId" required><br>
+        <label for="addName">Name:</label>
+        <input type="text" id="addName" name="name" required><br>
+        <label for="addDesignation">Designation:</label>
+        <input type="text" id="addDesignation" name="designation" required><br>
+        <label for="addDescription">Description:</label>
+        <textarea id="addDescription" name="description" required></textarea><br>
+        <label for="addPhoto">Photo:</label>
+        <input type="file" id="addPhoto" name="photo" accept="image/*" required><br>
+        <button type="submit">Add Officer</button>
+    </form>
+
+    <h2>Update Officer</h2>
+    <form id="updateOfficerForm" enctype="multipart/form-data">
+        <label for="updateId">Officer ID to Update:</label>
+        <input type="text" id="updateId" name="id" required><br>
+        <label for="updateOfficerId">New Officer ID:</label>
+        <input type="text" id="updateOfficerId" name="officerId"><br>
+        <label for="updateName">New Name:</label>
+        <input type="text" id="updateName" name="name"><br>
+        <label for="updateDesignation">New Designation:</label>
+        <input type="text" id="updateDesignation" name="designation"><br>
+        <label for="updateDescription">New Description:</label>
+        <textarea id="updateDescription" name="description"></textarea><br>
+        <label for="updatePhoto">New Photo:</label>
+        <input type="file" id="updatePhoto" name="photo" accept="image/*"><br>
+        <button type="submit">Update Officer</button>
+    </form>
+
+    <h2>Delete Officer</h2>
+    <form id="deleteOfficerForm">
+        <label for="deleteId">Officer ID to Delete:</label>
+        <input type="text" id="deleteId" name="id" required><br>
+        <button type="submit">Delete Officer</button>
+    </form>
+
+    <script>
+        document.getElementById('addOfficerForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = new FormData();
+            formData.append('officerId', document.getElementById('addOfficerId').value);
+            formData.append('name', document.getElementById('addName').value);
+            formData.append('designation', document.getElementById('addDesignation').value);
+            formData.append('description', document.getElementById('addDescription').value);
+            formData.append('photo', document.getElementById('addPhoto').files[0]);
+
+            fetch('http://localhost:3000/api/officers/add', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => alert(data))
+            .catch(error => alert('Error: ' + error.message));
+        });
+
+        document.getElementById('updateOfficerForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = new FormData();
+            formData.append('officerId', document.getElementById('updateOfficerId').value);
+            formData.append('name', document.getElementById('updateName').value);
+            formData.append('designation', document.getElementById('updateDesignation').value);
+            formData.append('description', document.getElementById('updateDescription').value);
+            formData.append('photo', document.getElementById('updatePhoto').files[0]);
+
+            fetch(`http://localhost:3000/api/officers/update/${document.getElementById('updateId').value}`, {
+                method: 'PUT',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => alert(data))
+            .catch(error => alert('Error: ' + error.message));
+        });
+
+        document.getElementById('deleteOfficerForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            fetch(`http://localhost:3000/api/officers/delete/${document.getElementById('deleteId').value}`, {
+                method: 'DELETE'
+            })
+            .then(response => response.text())
+            .then(data => alert(data))
+            .catch(error => alert('Error: ' + error.message));
+        });
+    </script>
+</body>
+</html>
