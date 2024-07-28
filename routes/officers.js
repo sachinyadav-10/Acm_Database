@@ -31,7 +31,7 @@ const checkObjectId = (req, res, next) => {
 
 // Routes
 router.post("/add", upload.single("photo"), addOfficer);
-router.put("/update/:id", checkObjectId, upload.single("photo"), updateOfficer);
-router.delete("/delete/:id", checkObjectId, deleteOfficer);
+router.put("/update/:officerId", upload.single("photo"), updateOfficer);
+router.delete("/delete/:officerId", deleteOfficer);
 
 module.exports = router;
